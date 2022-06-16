@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mongodb:
+    container_name: mongo-storage-test
+    image: mongo:4.4.6
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo:/mongo
+   
+  elasticsearch:
+    container_name: elasticsearch-storage-test
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
+    ports:
+      - '9200:9200'
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - http.compression=true
+      - http.max_content_length=500mb
+  
+  jupyter-python:
+    container_name: jupyter-python-storage-test
+    image: python:3.9-slim-buster
+    command: bash -c 'pip install elasticsearch &&
+                      pip install pymongo &&
+                      pip install jupyter clickhouse-driver &&
+                      jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
+    volumes:
+      - ./data:/data
+    ports:
+      - '8888:8888'
