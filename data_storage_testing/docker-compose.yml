@@ -19,12 +19,13 @@ services:
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - http.compression=true
       - http.max_content_length=500mb
+
   
   jupyter-python:
     container_name: jupyter-python-storage-test
     image: python:3.9-slim-buster
-    command: bash -c 'pip install elasticsearch &&
-                      pip install pymongo &&
+    command: bash -c 'pip install elasticsearch==7.9.1 &&
+                      pip install pymongo==4.1.1 &&
                       pip install jupyter clickhouse-driver &&
                       jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
     volumes:
