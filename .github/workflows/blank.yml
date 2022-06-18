@@ -24,6 +24,7 @@ jobs:
           mkdir -p reports/mypy
       - name: Install libraries for tests
         run: |
+          pip install lxml==4.9.0
           pip install mypy==0.961
           pip install flake8-html==0.4.2
           pip install wemake-python-styleguide==0.16.1
