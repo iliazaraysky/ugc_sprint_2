@@ -33,7 +33,7 @@ jobs:
           mypy ugc_api/db/ --ignore-missing-imports --html-report reports/mypy/
       - name: Run tests. Create flake8 html report
         run: |
-          flake8 ugc_api/db/ --format=html --htmldir=reports/flake8
+          flake8 ugc_api/db/ --ignore=D100,D103,D104 --format=html --htmldir=reports/flake8
       - name: Telegram report
         uses: appleboy/telegram-action@master
         with:
