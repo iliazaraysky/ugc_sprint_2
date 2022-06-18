@@ -15,34 +15,26 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
     steps:
-
       - uses: actions/checkout@v3
-
-
       - name: Set up Python
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      
       - name: Create folders for report
         run: |
           mkdir reports/flake8
           mkdir reports/mypy
-
       - name: Install libraries for tests
         run: |
           pip install mypy==0.961
           pip install flake8-html==0.4.2
           pip install wemake-python-styleguide==0.16.1
-
       - name: Run tests. Create html reports
         run: |
           mypy ugc_api/ --html-report reports/mypy/
           flake8 ugc_api/ --format=html --htmldir=flake-report
-
       - name: Run a one-line script
         run: echo Hello, world!
-
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
