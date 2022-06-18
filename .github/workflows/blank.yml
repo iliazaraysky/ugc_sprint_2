@@ -28,10 +28,12 @@ jobs:
           pip install mypy==0.961
           pip install flake8-html==0.4.2
           pip install wemake-python-styleguide==0.16.1
-      - name: Run tests. Create html reports
+      - name: Run tests. Create mypy html report
         run: |
-          mypy ugc_api/db --ignore-missing-imports --html-report reports/mypy/
-          flake8 ugc_api/ --format=html --htmldir=reports/flake8
+          mypy ugc_api/db/ --ignore-missing-imports --html-report reports/mypy/
+      - name: Run tests. Create flake8 html report
+        run: |
+          flake8 ugc_api/db/ --format=html --htmldir=reports/flake8
       - name: Telegram report
         uses: appleboy/telegram-action@master
         with:
