@@ -20,8 +20,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Create folders for report
         run: |
-          mkdir reports/flake8
-          mkdir reports/mypy
+          mkdir -p reports/flake8
+          mkdir -p reports/mypy
       - name: Install libraries for tests
         run: |
           pip install mypy==0.961
