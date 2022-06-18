@@ -148,6 +148,7 @@ dmypy.json
 
 .mypy_cache
 /ugc_api/reports
+/reports
 
 # папки со статикой и медиа
 static/
