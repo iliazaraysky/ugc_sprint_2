@@ -147,6 +147,7 @@ dmypy.json
 .history/
 
 .mypy_cache
+/ugc_api/reports
 
 # папки со статикой и медиа
 static/

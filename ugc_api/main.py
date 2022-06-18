@@ -1,12 +1,11 @@
-import logging
-from db import kafka
-from time import sleep
-from core import config
 import uvicorn as uvicorn
-from fastapi import FastAPI
-from api.v1 import rating_api
 from aiokafka import AIOKafkaProducer
+from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
+
+from api.v1 import rating_api
+from core import config
+from db import kafka
 
 app = FastAPI(
     title=config.PROJECT_NAME,
