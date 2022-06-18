@@ -32,3 +32,9 @@ jobs:
         run: |
           mypy ugc_api/ --html-report reports/mypy/
           flake8 ugc_api/ --format=html --htmldir=reports/flake8
+      - name: Telegram report
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ job.status }}
