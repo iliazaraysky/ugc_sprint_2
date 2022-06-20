@@ -1,12 +1,54 @@
 version: '3'
 
 services:
+  logstash:
+    container_name: logstash-lesson-practice
+    image: docker.elastic.co/logstash/logstash:7.10.2
+    environment:
+      XPACK_MONITORING_ENABLED: "false"
+      ES_HOST: "elasticsearch-lesson-practice:9200"
+    ports:
+      - "5044:5044/udp"
+    volumes:
+      - ./deploy/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+  elasticsearch:
+    container_name: elasticsearch-lesson-practice
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: elasticsearch
+    volumes:
+      - /tmp/esdata:/tmp/elasticsearch/data
+  kibana:
+    container_name: kibana-lesson-practice
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - "5601:5601"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: kibana
+    depends_on:
+      - elasticsearch
   kafka-zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: kafka-zookeeper
     hostname: zookeeper
     ports:
       - '2181:2181'
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://127.0.0.1:5044
+        tag: kafka-zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -87,33 +129,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-  logstash:
-    container_name: logstash-lesson-practice
-    image: docker.elastic.co/logstash/logstash:7.10.2
-    environment:
-      XPACK_MONITORING_ENABLED: "false"
-      ES_HOST: "elasticsearch-lesson-practice:9200"
-    ports:
-      - "5044:5044/udp"
-    volumes:
-      - ./deploy/logstash.conf:/config/logstash.conf:ro
-    command: logstash -f /config/logstash.conf
-    elasticsearch:
-      container_name: elasticsearch-lesson-practice
-      image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
-      environment:
-        discovery.type: single-node
-      ports:
-        - "9200:9200"
-      volumes:
-        - /tmp/esdata:/tmp/elasticsearch/data
-    kibana:
-      container_name: kibana-lesson-practice
-      image: docker.elastic.co/kibana/kibana:7.10.2
-      ports:
-        - "5601:5601"
-      depends_on:
-        - elasticsearch
   jupyter-python:
     container_name: jupyter-python
     image: python:3.9-slim-buster
