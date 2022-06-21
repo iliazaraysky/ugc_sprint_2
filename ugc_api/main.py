@@ -4,7 +4,7 @@ from aiokafka import AIOKafkaProducer
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from api.v1 import rating_api
+from api.v1 import rating_api, comments_api
 from core import config
 from db import kafka, mongodb
 
@@ -30,6 +30,7 @@ async def shutdown():
 
 
 app.include_router(rating_api.router, prefix='/api/v1/events/rating', tags=['rating_event'])
+app.include_router(comments_api.router, prefix='/api/v1/films/comments', tags=['user_comments'])
 
 if __name__ == '__main__':
     uvicorn.run(
