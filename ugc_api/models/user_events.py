@@ -1,10 +1,11 @@
-from pydantic import BaseModel
+from uuid import UUID
 from typing import Optional
+from pydantic import BaseModel
 
 
 class BaseData(BaseModel):
-    user_id: Optional[str]
-    film: Optional[str]
+    user_id: Optional[UUID]
+    film_id: Optional[UUID]
 
 
 class UserComment(BaseData):
