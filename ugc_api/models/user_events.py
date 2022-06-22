@@ -1,25 +1,14 @@
-from datetime import date, datetime
-from uuid import UUID
-
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from typing import Optional
 
 
 class BaseData(BaseModel):
-    film_id: UUID
-    user_id: UUID
-    created_at: datetime = Field(default_factory=datetime.now)
+    user_id: Optional[str]
+    film: Optional[str]
 
 
-class UserFilmView(BaseData):
-    view_time: date
-
-
-class UserFilmFavorites(BaseData):
-    favorites: bool
-
-
-class UserFilmComment(BaseData):
-    text: str
+class UserComment(BaseData):
+    comment: Optional[str]
 
 
 class UserFilmLike(BaseData):
