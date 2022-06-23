@@ -49,3 +49,15 @@ action = appleboy
 ```
 127.0.0.1:8000/api/v1/films/user-event/get-likes
 ```
+## Логи
+В проекте логирование осуществляется в Logstash.
+
+Удобный просмотр логов в Kibana адресу
+```
+127.0.0.1:5601
+```
+Для отображения логов в Kibana требуется завести Index Pattern
+
+Чтобы завести паттерн, перейдите в Management → Stack Management → Index Patterns и нажмите Create index pattern.
+
+После создания паттерна перейдите в Kibana → Discover, чтобы посмотреть содержимое индексов.

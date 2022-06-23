@@ -1,49 +1,44 @@
 version: '3'
 
 services:
-  #  logstash:
-  #    container_name: logstash-lesson-practice
-  #    image: docker.elastic.co/logstash/logstash:7.17.4
-  #    restart: always
-  #    environment:
-  #      XPACK_MONITORING_ENABLED: 'false'
-  #      ES_HOST: 'elasticsearch-lesson-practice:9200'
-  #    ports:
-  #      - '5044:5044/udp'
-  #    volumes:
-  #      - ./deploy/logstash.conf:/config/logstash.conf:ro
-  #    command: logstash -f /config/logstash.conf
-  #    depends_on:
-  #      - kibana
-  #      - elasticsearch
-  #  kibana:
-  #    container_name: kibana-lesson-practice
-  #    image: docker.elastic.co/kibana/kibana:7.17.4
-  #    ports:
-  #      - '5601:5601'
-  #    restart: always
-  #    logging:
-  #      driver: 'gelf'
-  #      options:
-  #        gelf-address: 'udp://127.0.0.1:5044'
-  #        tag: kibana
-  #    depends_on:
-  #      - elasticsearch
-  #  elasticsearch:
-  #    container_name: elasticsearch-lesson-practice
-  #    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
-  #    environment:
-  #      discovery.type: single-node
-  #    restart: always
-  #    ports:
-  #      - '9200:9200'
-  #    logging:
-  #      driver: 'gelf'
-  #      options:
-  #        gelf-address: 'udp://127.0.0.1:5044'
-  #        tag: elasticsearch
-  #    volumes:
-  #      - /tmp/data:/tmp/elasticsearch/data
+  logstash:
+    container_name: logstash-lesson-practice
+    image: docker.elastic.co/logstash/logstash:7.10.1
+    restart: always
+    environment:
+      XPACK_MONITORING_ENABLED: 'false'
+      ES_HOST: 'elasticsearch-lesson-practice:9200'
+    ports:
+      - '5044:5044/udp'
+    volumes:
+      - ./deploy/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+  kibana:
+    container_name: kibana-lesson-practice
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - '5601:5601'
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: kibana
+  elasticsearch:
+    container_name: elasticsearch-lesson-practice
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      discovery.type: single-node
+    restart: always
+    ports:
+      - '9200:9200'
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: elasticsearch
+    volumes:
+      - /tmp/data:/tmp/elasticsearch/data
   kafka-zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: kafka-zookeeper
@@ -123,6 +118,11 @@ services:
     ports:
       - '27017:27017'
     restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: mongo
     volumes:
     - ./mongo:/mongo
   fastapi:
@@ -138,27 +138,27 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-  jupyter-python:
-    container_name: jupyter-python
-    image: python:3.9-slim-buster
-    command: bash -c 'pip install install kafka-python==2.0.2 &&
-                      pip install jupyter clickhouse-driver &&
-                      pip install pymongo &&
-                      jupyter nbconvert --clear-output --inplace /data/clickhouse_tests.ipynb &&
-                      jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
-    volumes:
-      - ./clickhouse/data/clickhouse_tests.ipynb:/data/clickhouse_tests.ipynb
-    ports:
-      - '8888:8888'
-    restart: always
-    depends_on:
-      - kafka
-      - kafka-zookeeper
-      - fastapi
-      - clickhouse-node1
-      - clickhouse-node2
-      - clickhouse-node3
-      - clickhouse-node4
+#  jupyter-python:
+#    container_name: jupyter-python
+#    image: python:3.9-slim-buster
+#    command: bash -c 'pip install install kafka-python==2.0.2 &&
+#                      pip install jupyter clickhouse-driver &&
+#                      pip install pymongo &&
+#                      jupyter nbconvert --clear-output --inplace /data/clickhouse_tests.ipynb &&
+#                      jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
+#    volumes:
+#      - ./clickhouse/data/clickhouse_tests.ipynb:/data/clickhouse_tests.ipynb
+#    ports:
+#      - '8888:8888'
+#    restart: always
+#    depends_on:
+#      - kafka
+#      - kafka-zookeeper
+#      - fastapi
+#      - clickhouse-node1
+#      - clickhouse-node2
+#      - clickhouse-node3
+#      - clickhouse-node4
 
 #version: '3'
 #
