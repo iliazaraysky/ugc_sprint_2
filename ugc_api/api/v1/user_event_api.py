@@ -1,5 +1,7 @@
 from typing import List
+
 from fastapi import APIRouter, Depends
+
 from models.user_events import UserComment, UserFilmLike
 from services.user_event_service import (UserEventService,
                                          get_user_event_service)

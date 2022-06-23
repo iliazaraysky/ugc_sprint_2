@@ -1,12 +1,15 @@
+import sentry_sdk
 import uvicorn as uvicorn
-from motor.motor_asyncio import AsyncIOMotorClient
 from aiokafka import AIOKafkaProducer
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
+from motor.motor_asyncio import AsyncIOMotorClient
 
 from api.v1 import rating_api, user_event_api
 from core import config
 from db import kafka, mongodb
+
+sentry_sdk.init(dsn=config.SENTRY_SDK_DSN, traces_sample_rate=1.0)
 
 app = FastAPI(
     title=config.PROJECT_NAME,
@@ -14,6 +17,18 @@ app = FastAPI(
     openapi_url='/api/openapi.json',
     default_response_class=ORJSONResponse,
 )
+
+
+@app.middleware("http")
+async def sentry_exception(request: Request, call_next):
+    try:
+        response = await call_next(request)
+        return response
+    except Exception as e:
+        with sentry_sdk.push_scope() as scope:
+            scope.set_context("request", request)
+            sentry_sdk.capture_exception(e)
+        raise e
 
 
 @app.on_event('startup')

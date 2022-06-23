@@ -1,9 +1,11 @@
 from functools import lru_cache
+
 from fastapi import Depends
+from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
+
 from db.mongodb import get_mongo
 from models.user_events import UserComment, UserFilmLike
-from fastapi.encoders import jsonable_encoder
 
 
 class UserEventService:

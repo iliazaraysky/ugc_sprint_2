@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+
 from models.rating import UserFilmRating
 from services.rating_service import (RatingEventService,
                                      get_rating_event_service)

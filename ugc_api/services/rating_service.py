@@ -1,9 +1,10 @@
 from functools import lru_cache
 
 from aiokafka import AIOKafkaProducer
+from fastapi import Depends
+
 from core import config
 from db.kafka import get_kafka
-from fastapi import Depends
 from models.rating import UserFilmRating
 
 
