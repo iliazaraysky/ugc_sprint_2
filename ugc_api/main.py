@@ -1,7 +1,8 @@
 import sentry_sdk
+import httpx
 import uvicorn as uvicorn
 from aiokafka import AIOKafkaProducer
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.responses import ORJSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -46,6 +47,26 @@ async def shutdown():
 
 app.include_router(rating_api.router, prefix='/api/v1/events/rating', tags=['rating_event'])
 app.include_router(user_event_api.router, prefix='/api/v1/films/user-event', tags=['user_events'])
+
+
+# Проверяет Auth сервис. Обращается по адресу.
+# Если в заголовке есть валидный токен, предоставляет доступ к контенту
+@app.middleware('http')
+async def add_process_time_header(request: Request, call_next):
+    headers = request.headers
+    resp = await check_user('http://nginx/auth/v1/usercheck', dict(headers))
+    print("This is resp", resp)
+    if resp.status_code == 200:
+        response = await call_next(request)
+        return response
+    return Response(status_code=401)
+
+
+async def check_user(url, headers):
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, headers=headers)
+        return resp
+
 
 if __name__ == '__main__':
     uvicorn.run(
