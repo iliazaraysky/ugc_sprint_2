@@ -220,21 +220,21 @@ services:
     depends_on:
       - db-auth
       - redis
-  nginx:
-    image: nginx:stable
-    ports:
-      - 80:80
-    restart: on-failure
-    volumes:
-      - ./auth/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./auth/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  # nginx:
+  #   image: nginx:stable
+  #   ports:
+  #     - 80:80
+  #   restart: on-failure
+  #   volumes:
+  #     - ./auth/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+  #     - ./auth/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 #    logging:
 #      driver: 'gelf'
 #      options:
 #        gelf-address: 'udp://127.0.0.1:5044'
 #        tag: nginx
-    depends_on:
-      - auth
+    # depends_on:
+    #   - auth
 
 
 

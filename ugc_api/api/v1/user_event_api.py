@@ -1,3 +1,4 @@
+import httpx
 from typing import List
 
 from fastapi import APIRouter, Depends
@@ -7,6 +8,20 @@ from services.user_event_service import (UserEventService,
                                          get_user_event_service)
 
 router = APIRouter()
+
+
+# Получает user_id из Auth сервиса
+async def get_user_uuid(url, headers):
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, headers=headers)
+        return resp.json()
+
+
+# Проверяет наличие пользователя
+async def check_user(url, headers):
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, headers=headers)
+        return resp
 
 
 @router.post("/add-comment")

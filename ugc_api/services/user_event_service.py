@@ -27,7 +27,7 @@ class UserEventService:
         db = self.mongo.likes
         like = jsonable_encoder(like)
         await db['like'].insert_one(like)
-        return {'message create': "ok"}
+        return {'message create': 'ok'}
 
 
 @lru_cache()

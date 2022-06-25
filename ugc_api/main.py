@@ -1,5 +1,5 @@
 import sentry_sdk
-import httpx
+from httpx import AsyncClient, LocalProtocolError
 import uvicorn as uvicorn
 from aiokafka import AIOKafkaProducer
 from fastapi import FastAPI, Request, Response
@@ -12,6 +12,7 @@ from db import kafka, mongodb
 
 sentry_sdk.init(dsn=config.SENTRY_SDK_DSN, traces_sample_rate=1.0)
 
+
 app = FastAPI(
     title=config.PROJECT_NAME,
     docs_url='/api/openapi',
@@ -20,16 +21,16 @@ app = FastAPI(
 )
 
 
-@app.middleware("http")
-async def sentry_exception(request: Request, call_next):
-    try:
-        response = await call_next(request)
-        return response
-    except Exception as e:
-        with sentry_sdk.push_scope() as scope:
-            scope.set_context("request", request)
-            sentry_sdk.capture_exception(e)
-        raise e
+# @app.middleware("http")
+# async def sentry_exception(request: Request, call_next):
+#     try:
+#         response = await call_next(request)
+#         return response
+#     except Exception as e:
+#         with sentry_sdk.push_scope() as scope:
+#             scope.set_context("request", request)
+#             sentry_sdk.capture_exception(e)
+#         raise e
 
 
 @app.on_event('startup')
@@ -54,16 +55,17 @@ app.include_router(user_event_api.router, prefix='/api/v1/films/user-event', tag
 @app.middleware('http')
 async def add_process_time_header(request: Request, call_next):
     headers = request.headers
-    resp = await check_user('http://nginx/auth/v1/usercheck', dict(headers))
-    print("This is resp", resp)
-    if resp.status_code == 200:
+    auth_url = 'http://flask-auth-service:5000/auth/v1/usercheck'
+    auth_check = await check_user(auth_url, dict(headers))
+
+    if auth_check.status_code == 200:
         response = await call_next(request)
         return response
     return Response(status_code=401)
 
 
 async def check_user(url, headers):
-    async with httpx.AsyncClient() as client:
+    async with AsyncClient() as client:
         resp = await client.get(url, headers=headers)
         return resp
 
