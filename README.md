@@ -2,6 +2,7 @@
 
 Ссылка на проект: https://github.com/iliazaraysky/ugc_sprint_2
 
+**Полный запуск** проекта из файлом [docker-compose.yml](docker-compose.yml) в корне
 ## Github workflows
 
 1. В проекте настроен Github workflows. После каждого pull,
