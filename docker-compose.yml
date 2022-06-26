@@ -1,44 +1,44 @@
 version: '3'
 
 services:
-#  logstash:
-#    container_name: logstash-lesson-practice
-#    image: docker.elastic.co/logstash/logstash:7.10.1
-#    restart: always
-#    environment:
-#      XPACK_MONITORING_ENABLED: 'false'
-#      ES_HOST: 'elasticsearch-lesson-practice:9200'
-#    ports:
-#      - '5044:5044/udp'
-#    volumes:
-#      - ./deploy/logstash.conf:/config/logstash.conf:ro
-#    command: logstash -f /config/logstash.conf
-#  kibana:
-#    container_name: kibana-lesson-practice
-#    image: docker.elastic.co/kibana/kibana:7.10.2
-#    ports:
-#      - '5601:5601'
-#    restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: kibana
-#  elasticsearch:
-#    container_name: elasticsearch-lesson-practice
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
-#    environment:
-#      discovery.type: single-node
-#    restart: always
-#    ports:
-#      - '9200:9200'
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: elasticsearch
-#    volumes:
-#      - /tmp/data:/tmp/elasticsearch/data
+  logstash:
+    container_name: logstash-lesson-practice
+    image: docker.elastic.co/logstash/logstash:7.10.1
+    restart: always
+    environment:
+      XPACK_MONITORING_ENABLED: 'false'
+      ES_HOST: 'elasticsearch-lesson-practice:9200'
+    ports:
+      - '5044:5044/udp'
+    volumes:
+      - ./deploy/logstash.conf:/config/logstash.conf:ro
+    command: logstash -f /config/logstash.conf
+  kibana:
+    container_name: kibana-lesson-practice
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - '5601:5601'
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: kibana
+  elasticsearch:
+    container_name: elasticsearch-lesson-practice
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      discovery.type: single-node
+    restart: always
+    ports:
+      - '9200:9200'
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: elasticsearch
+    volumes:
+      - /tmp/data:/tmp/elasticsearch/data
   kafka-zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: kafka-zookeeper
@@ -68,93 +68,93 @@ services:
       KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: kafka
-#  zookeeper:
-#    image: zookeeper:3.5
-#    container_name: zookeeper
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: zookeeper
-#    hostname: zookeeper
-#    restart: always
-#  clickhouse-node1:
-#    image: yandex/clickhouse-server:20.4
-#    container_name: clickhouse-node1
-#    hostname: clickhouse-node1
-#    restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: clickhouse-node1
-#    ports:
-#      - '8123:8123'
-#      - '9000:9000'
-#    volumes:
-#      - ./clickhouse/node1:/etc/clickhouse-server
-#    depends_on:
-#      - zookeeper
-#  clickhouse-node2:
-#    image: yandex/clickhouse-server:20.4
-#    container_name: clickhouse-node2
-#    hostname: clickhouse-node2
-#    volumes:
-#      - ./ugc_api/clickhouse/node2:/etc/clickhouse-server
-#    restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: clickhouse-node2
-#    depends_on:
-#      - zookeeper
-#  clickhouse-node3:
-#    image: yandex/clickhouse-server:20.4
-#    container_name: clickhouse-node3
-#    hostname: clickhouse-node3
-#    volumes:
-#      - ./clickhouse/node3:/etc/clickhouse-server
-#    restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: clickhouse-node3
-#    depends_on:
-#      - zookeeper
-#  clickhouse-node4:
-#    image: yandex/clickhouse-server:20.4
-#    container_name: clickhouse-node4
-#    hostname: clickhouse-node4
-#    volumes:
-#      - ./clickhouse/node4:/etc/clickhouse-server
-#    restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: clickhouse-node4
-#    depends_on:
-#      - zookeeper
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: kafka
+  zookeeper:
+    image: zookeeper:3.5
+    container_name: zookeeper
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: zookeeper
+    hostname: zookeeper
+    restart: always
+  clickhouse-node1:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node1
+    hostname: clickhouse-node1
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: clickhouse-node1
+    ports:
+      - '8123:8123'
+      - '9000:9000'
+    volumes:
+      - ./clickhouse/node1:/etc/clickhouse-server
+    depends_on:
+      - zookeeper
+  clickhouse-node2:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node2
+    hostname: clickhouse-node2
+    volumes:
+      - ./ugc_api/clickhouse/node2:/etc/clickhouse-server
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: clickhouse-node2
+    depends_on:
+      - zookeeper
+  clickhouse-node3:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node3
+    hostname: clickhouse-node3
+    volumes:
+      - ./clickhouse/node3:/etc/clickhouse-server
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: clickhouse-node3
+    depends_on:
+      - zookeeper
+  clickhouse-node4:
+    image: yandex/clickhouse-server:20.4
+    container_name: clickhouse-node4
+    hostname: clickhouse-node4
+    volumes:
+      - ./clickhouse/node4:/etc/clickhouse-server
+    restart: always
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: clickhouse-node4
+    depends_on:
+      - zookeeper
   mongo-fastapi:
     image: mongo:4.4.6
     container_name: mongo-fastapi
     ports:
       - '27017:27017'
     restart: always
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: mongo-fastapi
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: mongo-fastapi
     volumes:
-    - ./ugc_api/mongo:/mongo
+      - ./ugc_api/mongo:/mongo
   fastapi:
     container_name: fastapi
     build: ugc_api/
@@ -163,11 +163,11 @@ services:
     env_file:
       - .env
     restart: on-failure
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: fastapi
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: fastapi
     healthcheck:
       test: ["CMD", "curl", "-f", "udp://127.0.0.1:5044"]
       interval: 30s
@@ -181,22 +181,22 @@ services:
     restart: on-failure
     ports:
       - ${DB_PORT}:${DB_PORT}
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: db-auth-postgres
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: db-auth-postgres
   redis:
     image: redis:7.0-rc3-alpine3.15
     container_name: redis-auth
     restart: on-failure
     env_file:
       - .env
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: redis-auth
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: redis-auth
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
   auth:
@@ -212,50 +212,47 @@ services:
     restart: on-failure
     env_file:
       - .env
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: flask-auth-service
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: flask-auth-service
     depends_on:
       - db-auth
       - redis
-  # nginx:
-  #   image: nginx:stable
-  #   ports:
-  #     - 80:80
-  #   restart: on-failure
-  #   volumes:
-  #     - ./auth/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-  #     - ./auth/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-#    logging:
-#      driver: 'gelf'
-#      options:
-#        gelf-address: 'udp://127.0.0.1:5044'
-#        tag: nginx
-    # depends_on:
-    #   - auth
-
-
-
-#  jupyter-python:
-#    container_name: jupyter-python
-#    image: python:3.9-slim-buster
-#    command: bash -c 'pip install install kafka-python==2.0.2 &&
-#                      pip install jupyter clickhouse-driver &&
-#                      pip install pymongo &&
-#                      jupyter nbconvert --clear-output --inplace /data/clickhouse_tests.ipynb &&
-#                      jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
-#    volumes:
-#      - ./clickhouse/data/clickhouse_tests.ipynb:/data/clickhouse_tests.ipynb
-#    ports:
-#      - '8888:8888'
-#    restart: always
-#    depends_on:
-#      - kafka
-#      - kafka-zookeeper
-#      - fastapi
-#      - clickhouse-node1
-#      - clickhouse-node2
-#      - clickhouse-node3
-#      - clickhouse-node4
+  nginx:
+    image: nginx:stable
+    ports:
+      - 80:80
+    restart: on-failure
+    volumes:
+      - ./auth/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./auth/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    logging:
+      driver: 'gelf'
+      options:
+        gelf-address: 'udp://127.0.0.1:5044'
+        tag: nginx
+    depends_on:
+      - auth 
+  jupyter-python:
+    container_name: jupyter-python
+    image: python:3.9-slim-buster
+    command: bash -c 'pip install install kafka-python==2.0.2 &&
+                      pip install jupyter clickhouse-driver &&
+                      pip install pymongo &&
+                      jupyter nbconvert --clear-output --inplace /data/clickhouse_tests.ipynb &&
+                      jupyter notebook --port=8888 --no-browser --ip=0.0.0.0 --allow-root'
+    volumes:
+      - ./clickhouse/data/clickhouse_tests.ipynb:/data/clickhouse_tests.ipynb
+    ports:
+      - '8888:8888'
+    restart: always
+    depends_on:
+      - kafka
+      - kafka-zookeeper
+      - fastapi
+      - clickhouse-node1
+      - clickhouse-node2
+      - clickhouse-node3
+      - clickhouse-node4

@@ -1,6 +1,6 @@
-import httpx
 from typing import List
 
+import httpx
 from fastapi import APIRouter, Depends
 
 from models.user_events import UserComment, UserFilmLike

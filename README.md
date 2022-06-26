@@ -49,14 +49,18 @@ action = appleboy
 http://127.0.0.1/auth/v1/login
 ```
 
+Без access_token, мы будем получать код 401 unauthorized при обращении к адресам FastAPI
+
 ## MongoDB + FastAPI
 В проект добавлен MongoDB. Действия пользователя, такие как комментарии, лайки,
 записываются в MongoDB
 
 Пример POST-запроса от пользователя, чтобы поставить фильму лайк
+
 ```
 127.0.0.1:8000/api/v1/films/user-event/add-like
 ```
+
 ```
 {
     "film_id": "49a94bc3-4678-49e1-9dbf-6386bb7c21d2",
@@ -70,6 +74,7 @@ http://127.0.0.1/auth/v1/login
 ```
 127.0.0.1:8000/api/v1/films/user-event/get-likes
 ```
+
 ## Логи
 В проекте логирование осуществляется в Logstash.
 

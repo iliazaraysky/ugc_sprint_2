@@ -1,5 +1,5 @@
+import aiohttp
 import sentry_sdk
-from httpx import AsyncClient, LocalProtocolError
 import uvicorn as uvicorn
 from aiokafka import AIOKafkaProducer
 from fastapi import FastAPI, Request, Response
@@ -20,7 +20,8 @@ app = FastAPI(
     default_response_class=ORJSONResponse,
 )
 
-
+# Когда подключим Sentry, можно раскомментировать код
+#
 # @app.middleware("http")
 # async def sentry_exception(request: Request, call_next):
 #     try:
@@ -58,16 +59,16 @@ async def add_process_time_header(request: Request, call_next):
     auth_url = 'http://flask-auth-service:5000/auth/v1/usercheck'
     auth_check = await check_user(auth_url, dict(headers))
 
-    if auth_check.status_code == 200:
+    if auth_check.status == 200:
         response = await call_next(request)
         return response
     return Response(status_code=401)
 
 
 async def check_user(url, headers):
-    async with AsyncClient() as client:
-        resp = await client.get(url, headers=headers)
-        return resp
+    async with aiohttp.ClientSession(headers=headers) as session:
+        async with session.get(url) as response:
+            return response
 
 
 if __name__ == '__main__':
